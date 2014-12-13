@@ -4,10 +4,6 @@ import java.awt.Point;
 
 public abstract class AbstractRulebook {
 
-	
-	boolean allowMove(Piece p, Point newPos)
-	{
-		
-	}
+	abstract boolean checkMove(Piece p, Point newPos);
 
 }
