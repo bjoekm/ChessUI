@@ -17,9 +17,6 @@ public class GameFrame extends JFrame {
 	public static final int DEFAULT_WIDTH = 800;
 	public static final int DEFAULT_HEIGHT = 600;
 	
-	private boolean statusBarInit = false;
-	private JLabel statusLabel;
-	
 	public GameFrame()  {
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,15 +32,9 @@ public class GameFrame extends JFrame {
 		north.setBackground(Color.RED);
 		
 		//Setup South panel layout
-		JPanel south = new JPanel();
-		south.setPreferredSize(new Dimension(this.getWidth(), 20));
-		south.setBackground(Color.GREEN);
-		south.setPreferredSize(new Dimension(this.getWidth(), 16));
-		south.setLayout(new BoxLayout(south, BoxLayout.X_AXIS));
-		statusLabel = new JLabel("status");
-		statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		south.add(statusLabel);
-		statusBarInit = true;
+		StatusPanel statusLabel = StatusPanel.getInstance();
+		statusLabel.setPreferredSize(new Dimension(this.getWidth(), 20));
+		statusLabel.setBackground(Color.GREEN);
 		
 		//Setup East panel
 		JPanel east = new JPanel();
@@ -52,15 +43,11 @@ public class GameFrame extends JFrame {
 		
 		//Add panels
 		add(north, BorderLayout.NORTH);
-		add(south, BorderLayout.SOUTH);
+		add(statusLabel, BorderLayout.SOUTH);
 		add(east, BorderLayout.EAST);
 		add(new GameCanvas(), BorderLayout.CENTER);
 		
 		setVisible(true);
-	}
-	
-	public void setStatus(String s){
-		statusLabel.setText(s);
 	}
 
 	public static void main(String[] args) {

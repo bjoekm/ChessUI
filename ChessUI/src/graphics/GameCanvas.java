@@ -34,6 +34,7 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		StatusPanel.setStatus("Clicked test",0);
 		System.out.println("Clicked test");
 	}
 
