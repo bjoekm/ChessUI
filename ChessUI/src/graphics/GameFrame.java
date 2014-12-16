@@ -3,15 +3,22 @@ package graphics;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Label;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
 public class GameFrame extends JFrame {
 
 	public static final int DEFAULT_WIDTH = 800;
 	public static final int DEFAULT_HEIGHT = 600;
+	
+	private boolean statusBarInit = false;
+	private JLabel statusLabel;
 	
 	public GameFrame()  {
 
@@ -31,6 +38,12 @@ public class GameFrame extends JFrame {
 		JPanel south = new JPanel();
 		south.setPreferredSize(new Dimension(this.getWidth(), 20));
 		south.setBackground(Color.GREEN);
+		south.setPreferredSize(new Dimension(this.getWidth(), 16));
+		south.setLayout(new BoxLayout(south, BoxLayout.X_AXIS));
+		statusLabel = new JLabel("status");
+		statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		south.add(statusLabel);
+		statusBarInit = true;
 		
 		//Setup East panel
 		JPanel east = new JPanel();
@@ -41,9 +54,13 @@ public class GameFrame extends JFrame {
 		add(north, BorderLayout.NORTH);
 		add(south, BorderLayout.SOUTH);
 		add(east, BorderLayout.EAST);
-		add(new Board(), BorderLayout.CENTER);
+		add(new GameCanvas(), BorderLayout.CENTER);
 		
 		setVisible(true);
+	}
+	
+	public void setStatus(String s){
+		statusLabel.setText(s);
 	}
 
 	public static void main(String[] args) {
