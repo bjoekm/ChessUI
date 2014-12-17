@@ -23,7 +23,7 @@ public class GameFrame extends JFrame {
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		setLocationRelativeTo(null);
 		setTitle("A square based board game with two players");
-		setResizable(false);
+		setResizable(true);
 		setLayout(new BorderLayout());
 		
 		//SEtup north panel layout

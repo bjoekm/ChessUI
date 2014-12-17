@@ -15,9 +15,10 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 
 	private static final long DEFAULT_SLEEP = 20L; //draw once every 20 ms ie 50 Hz
 	private ArrayList<Sprite> sprites;
-	private Sprite background;
+	private Sprite board;
 	private boolean isDraggingObjected = false;
 	private Sprite draggedSprite = null;
+	private boolean isExited = false;
 	
 	public GameCanvas(){
 		this.setBackground(Color.CYAN);
@@ -67,6 +68,8 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 		str += " , " + e.getY() + ")";
 		StatusPanel.setStatus(str,StatusPanel.PRESSED_RELEASED_STATUS_IND);
 		
+		
+		
 		if(isDraggingObjected){
 			//Check if move was allowed or snapBack
 			//draggedSprite.snapBack();
@@ -81,6 +84,7 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 		str += " (" + e.getX();
 		str += " , " + e.getY() + ")";
 		StatusPanel.setStatus(str,StatusPanel.IN_OUT_STATUS_IND);
+		isExited = false;
 	}
 
 	@Override
@@ -89,7 +93,7 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 		str += " (" + e.getX();
 		str += " , " + e.getY() + ")";
 		StatusPanel.setStatus(str,StatusPanel.IN_OUT_STATUS_IND);
-		
+		isExited = true;
 		if(isDraggingObjected){
 			draggedSprite.snapBack();
 			isDraggingObjected = false;
@@ -155,7 +159,7 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 		Graphics g = buffer.getDrawGraphics();
 		
 		this.paint(g);
-		//TODO paint background first, if we have one
+		//TODO paint background sprite first
 		for (Sprite spr : sprites) {
 			spr.draw(g);
 		}
