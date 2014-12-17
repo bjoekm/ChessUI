@@ -10,22 +10,28 @@ import java.awt.Rectangle;
 public class Sprite extends Rectangle {
 	
 	private Image img;
-	private Color dummyColor=Color.ORANGE;
-	private boolean moveable = true;
+	private Color dummyColor;
+	private boolean moveable;
+	private boolean selectable;
+	private Point snapBackPoint;
+	
 	
 	public Sprite(){
-		this.img = null;
-		height = 30;
-		width = 40;
+		this(null, Color.ORANGE, 30, 40, true, true);
 	}
 	
 	public Sprite(Image img){
-		if(img == null){
-			 //Call to other constructor.
-		}
+		this(img, Color.ORANGE, img.getHeight(null), img.getWidth(null), true, true);
+	}
+	
+	public Sprite(Image img,Color c, int width, int height, boolean isMoveable, boolean isSelectable){
 		this.img = img;
-		height = img.getHeight(null);
-		width = img.getWidth(null);
+		this.width = width;
+		this.height = height;
+		this.moveable = isMoveable;
+		this.selectable = isSelectable;
+		snapBackPoint = new Point();
+		dummyColor = c;
 	}
 	
 	public void draw(Graphics g){
@@ -44,6 +50,23 @@ public class Sprite extends Rectangle {
 	
 	public void setDummyColor(Color c){
 		dummyColor = c;
+	}
+	
+	public void setMiddlePointLocation(Point p){
+		int halfWidth = Math.round((float)width/2);
+		int halfHeight = Math.round((float)height/2);
+		p.translate(-halfWidth,-halfHeight);
+		this.setLocation(p);
+	}
+	
+	public void setSnapBackPoint(){
+		snapBackPoint.x = x;
+		snapBackPoint.y = y;
+	}
+	
+	public void snapBack(){
+		x = snapBackPoint.x;
+		y = snapBackPoint.y;
 	}
 
 	public boolean isMoveable() {

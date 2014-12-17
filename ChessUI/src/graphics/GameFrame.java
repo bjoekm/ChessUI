@@ -41,13 +41,18 @@ public class GameFrame extends JFrame {
 		east.setPreferredSize(new Dimension(250, this.getHeight()));
 		east.setBackground(Color.BLUE);
 		
+		//Setup gamecanvas (center)
+		GameCanvas canvas = new GameCanvas();
+		Thread t = new Thread(canvas);
+		
 		//Add panels
 		add(north, BorderLayout.NORTH);
 		add(statusLabel, BorderLayout.SOUTH);
 		add(east, BorderLayout.EAST);
-		add(new GameCanvas(), BorderLayout.CENTER);
+		add(canvas, BorderLayout.CENTER);
 		
 		setVisible(true);
+		t.start();
 	}
 
 	public static void main(String[] args) {
