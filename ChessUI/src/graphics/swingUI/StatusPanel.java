@@ -1,4 +1,4 @@
-package graphics;
+package graphics.swingUI;
 
 import java.awt.GridLayout;
 import java.awt.Point;

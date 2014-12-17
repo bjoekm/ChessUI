@@ -1,10 +1,16 @@
-package graphics;
+package rules;
+
+import graphics.Sprite;
 
 import java.awt.Point;
 import java.util.ArrayList;
 
-import rules.IGameModel;
 
+/**
+ * Simple stub implementation of a game model allowing for simple tests of sprites movement.
+ * @author Bjorn
+ *
+ */
 public class SimpleGameModel implements IGameModel{
 
 	private boolean isDraggingObjected = false;

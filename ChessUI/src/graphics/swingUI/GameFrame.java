@@ -1,4 +1,4 @@
-package graphics;
+package graphics.swingUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -11,6 +11,20 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+/**
+ * Main class for the ChessUI-project. <p>
+ * 
+ * Creates the frame and the different panels. <p>
+ * Idea:
+ * <li>One panel to the left showing the game with its board and pieces.
+ * <li>One panel to the right showing timers and previous moves.
+ * <li>One panel at the bottom with status texts <p><br>
+ * 
+ * Currently also have a panel at the top - unknown. Could be used for some sort of scorekeeping.
+ * 
+ * @author Bjorn
+ *
+ */
 @SuppressWarnings("serial")
 public class GameFrame extends JFrame {
 

@@ -1,4 +1,6 @@
-package graphics;
+package graphics.swingUI;
+
+import graphics.Sprite;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -11,6 +13,7 @@ import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
 import rules.IGameModel;
+import rules.SimpleGameModel;
 
 /**
  * Tasked with updating the graphics and handling mouse events concerning the game<p>
@@ -27,23 +30,24 @@ import rules.IGameModel;
 @SuppressWarnings("serial")
 public class GameCanvas extends Canvas implements MouseListener, MouseMotionListener, Runnable {
 
+	/**
+	 * Determines how close to the canvas edge one can move a sprite's center coord.
+	 */
 	public static final int DRAGGING_BORDER_SIZE = 10;
 	
-	public static final long DEFAULT_SLEEP = 20L; //draw once every 20 ms ie 50 Hz
-	private ArrayList<Sprite> sprites;
-	private ArrayList<Sprite> board;
+	/**
+	 * Draw once every 20 ms ie. 50 Hz
+	 */
+	public static final long DEFAULT_SLEEP = 20L;
+	private int printSleepCounter = 0; //Difficult to read sleep time i status bar i printing at 50 Hz
+	private ArrayList<Sprite> sprites; //Sprites drawn second
+	private ArrayList<Sprite> board;//Sprites drawn first
 
-	private boolean inside = true;
-	private int printSleepCounter = 0;
+	private boolean inside = true; //True if mouse pointer is inside the canvas bounds
 	private IGameModel model;
 	
-	public GameCanvas(){
-		
-		this(new SimpleGameModel());
-		this.setBackground(Color.CYAN);
-	}
-	
 	public GameCanvas(IGameModel model){
+		this.setBackground(Color.CYAN);
 		this.model = model;
 		board = model.getBoard();
 		sprites = model.getGameObjects();
@@ -51,49 +55,43 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 		addMouseMotionListener(this);
 		this.setIgnoreRepaint(true);
 	}
+	
+	public GameCanvas(){
+		this(new SimpleGameModel());
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		String str = "Clicked: ";
-		str += " (" + e.getX();
-		str += " , " + e.getY() + ")";
-		StatusPanel.setStatus(str,StatusPanel.CLICKED_STATUS_IND);
+		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.CLICKED_STATUS_IND);
 		model.pointClicked(e.getPoint());
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		String str = "Pressed ";
-		str += " (" + e.getX();
-		str += " , " + e.getY() + ")";
-		StatusPanel.setStatus(str,StatusPanel.PRESSED_RELEASED_STATUS_IND);
+		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.PRESSED_RELEASED_STATUS_IND);
 		model.pointPressed(e.getPoint());
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		String str = "Released";
-		str += " (" + e.getX();
-		str += " , " + e.getY() + ")";
-		StatusPanel.setStatus(str,StatusPanel.PRESSED_RELEASED_STATUS_IND);
+		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.PRESSED_RELEASED_STATUS_IND);
 		model.releasedPoint(e.getPoint(), inside);
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		String str = "Inside ";
-		str += " (" + e.getX();
-		str += " , " + e.getY() + ")";
-		StatusPanel.setStatus(str,StatusPanel.IN_OUT_STATUS_IND);
+		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.IN_OUT_STATUS_IND);
 		inside = true;
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		String str = "Outside";
-		str += " (" + e.getX();
-		str += " , " + e.getY() + ")";
-		StatusPanel.setStatus(str,StatusPanel.IN_OUT_STATUS_IND);
+		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.IN_OUT_STATUS_IND);
 		inside = false;
 	}
 
@@ -122,9 +120,7 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		String str = "Moved: ";
-		str += " (" + e.getX();
-		str += " , " + e.getY() + ")";
-		StatusPanel.setStatus(str,StatusPanel.MOUSE_MOVED_STATUS_IND);
+		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.MOUSE_MOVED_STATUS_IND);
 	}
 
 	@Override
@@ -145,7 +141,6 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 				StatusPanel.setStatus("Sleep: "+time2sleep , StatusPanel.SLEEP_TIME_STATUS_IND);
 			}
 			
-			
 			try {
 				Thread.sleep(time2sleep);
 			} catch (InterruptedException e) {
@@ -153,13 +148,13 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 			}
 			
 			beforeTime = System.currentTimeMillis();
-		
 		}
 	}
 	
-	public void draw(){
+	private void draw(){
 		BufferStrategy buffer = this.getBufferStrategy();
 		if(buffer==null){
+			//Initialisation of the Strategy seems to need to be done after JFrame.setVisible(true)
 			this.createBufferStrategy(2);
 			return;
 		}
