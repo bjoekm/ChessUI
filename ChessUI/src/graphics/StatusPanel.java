@@ -1,6 +1,7 @@
 package graphics;
 
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -28,6 +29,18 @@ public final class StatusPanel extends JPanel {
 			instance = new StatusPanel();
 		}
 		return instance;	
+	}
+	
+	public static String appendPoint(String statusMsg, Point p){
+		String str = statusMsg;
+		str += " (" + p.x ;
+		str += " , " + p.y + ")";
+		return str;
+	}
+	
+	public static void setStatusWithPoint(String s,Point p, int labelIndex){
+		String tmp = appendPoint(s,p);
+		setStatus(tmp,labelIndex);
 	}
 	
 	public static void setStatus(String s, int labelIndex){

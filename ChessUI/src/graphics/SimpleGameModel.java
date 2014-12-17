@@ -54,12 +54,11 @@ public class SimpleGameModel implements IGameModel{
 
 	@Override
 	public void releasedPoint(Point p, boolean inside) {
-		if(!inside){
-			draggedSprite.snapBack();
-			return;
-		}
-		
 		if(isDraggingObjected){
+			if(!inside){
+				draggedSprite.snapBack();
+				return;
+			}
 			//Check if move was allowed or snapBack
 			//draggedSprite.snapBack();
 			isDraggingObjected = false;

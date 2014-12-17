@@ -27,7 +27,9 @@ import rules.IGameModel;
 @SuppressWarnings("serial")
 public class GameCanvas extends Canvas implements MouseListener, MouseMotionListener, Runnable {
 
-	private static final long DEFAULT_SLEEP = 20L; //draw once every 20 ms ie 50 Hz
+	public static final int DRAGGING_BORDER_SIZE = 10;
+	
+	public static final long DEFAULT_SLEEP = 20L; //draw once every 20 ms ie 50 Hz
 	private ArrayList<Sprite> sprites;
 	private ArrayList<Sprite> board;
 
@@ -97,11 +99,24 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		String str = "Dragged: ";
-		str += " (" + e.getX();
-		str += " , " + e.getY() + ")";
-		StatusPanel.setStatus(str,StatusPanel.DRAGGED_STATUS_IND);
-		model.pointDragged(e.getPoint(), inside);
+		int px = e.getX();
+		int py = e.getY();
+		StatusPanel.setStatusWithPoint("Dragged: ", e.getPoint(),StatusPanel.DRAGGED_STATUS_IND);
+		
+		//Make sure the sent point is always inside the canvas bounds
+		if(px<DRAGGING_BORDER_SIZE){
+			px = DRAGGING_BORDER_SIZE;
+		}else if(px > getWidth() -DRAGGING_BORDER_SIZE){
+			px = getWidth()-DRAGGING_BORDER_SIZE;
+		}
+		
+		if(py<DRAGGING_BORDER_SIZE){
+			py = DRAGGING_BORDER_SIZE;
+		}else if(py > getHeight()-DRAGGING_BORDER_SIZE ){
+			py = getHeight()-DRAGGING_BORDER_SIZE;
+		}
+		
+		model.pointDragged(new Point(px,py), inside);
 	}
 
 	@Override
