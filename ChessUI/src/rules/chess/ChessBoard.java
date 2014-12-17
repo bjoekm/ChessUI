@@ -1,13 +1,13 @@
-package rules;
+package rules.chess;
 
 import java.awt.Image;
 
 import graphics.Sprite;
 
 @SuppressWarnings("serial")
-public class Board extends Sprite {
+public class ChessBoard extends Sprite {
 
-	public Board(Image img) {
+	public ChessBoard(Image img) {
 		super(img);
 		this.setMoveable(false);
 		// TODO Auto-generated constructor stub

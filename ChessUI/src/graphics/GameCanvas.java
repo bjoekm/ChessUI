@@ -10,23 +10,41 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
+import rules.IGameModel;
+
+/**
+ * Tasked with updating the graphics and handling mouse events concerning the game<p>
+ * 
+ * Is a part of the graphical layer in the ChessUI project. <br>
+ * Extends the {@link Canvas} class and implements the {@link MouseListener}, {@link MouseMotionListener} and {@link Runnable} interfaces. <p>
+ * 
+ * It is in this panel/area that the actual game plays out. MouseEvents are caught and the relevant ones are sent to the underlying gameModel
+ * where sprites and game state should be updated according to the game rules. Meanwhile this class is responsible for the continuous 
+ * redrawing of all graphics using a {@link BufferStrategy} to help with the animation part. 
+ * 
+ * @author bjoekm
+ */
 @SuppressWarnings("serial")
 public class GameCanvas extends Canvas implements MouseListener, MouseMotionListener, Runnable {
 
 	private static final long DEFAULT_SLEEP = 20L; //draw once every 20 ms ie 50 Hz
 	private ArrayList<Sprite> sprites;
-	private Sprite board;
-	private boolean isDraggingObjected = false;
-	private Sprite draggedSprite = null;
-	private boolean isExited = false;
+	private ArrayList<Sprite> board;
+
+	private boolean inside = true;
+	private int printSleepCounter = 0;
+	private IGameModel model;
 	
 	public GameCanvas(){
+		
+		this(new SimpleGameModel());
 		this.setBackground(Color.CYAN);
-		
-		sprites = new ArrayList<Sprite>();
-		
-		Sprite tmp = new Sprite();
-		sprites.add(tmp);
+	}
+	
+	public GameCanvas(IGameModel model){
+		this.model = model;
+		board = model.getBoard();
+		sprites = model.getGameObjects();
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		this.setIgnoreRepaint(true);
@@ -38,7 +56,7 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 		str += " (" + e.getX();
 		str += " , " + e.getY() + ")";
 		StatusPanel.setStatus(str,StatusPanel.CLICKED_STATUS_IND);
-		//System.out.println("Clicked test");
+		model.pointClicked(e.getPoint());
 	}
 
 	@Override
@@ -47,18 +65,7 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 		str += " (" + e.getX();
 		str += " , " + e.getY() + ")";
 		StatusPanel.setStatus(str,StatusPanel.PRESSED_RELEASED_STATUS_IND);
-		
-		Point p = e.getPoint();
-		
-		for (Sprite  sprite : sprites) {
-			if(sprite.isMoveable()){
-				if(sprite.contains(p)){
-					sprite.setSnapBackPoint();
-					isDraggingObjected = true;
-					draggedSprite = sprite;
-				}
-			}
-		}
+		model.pointPressed(e.getPoint());
 	}
 
 	@Override
@@ -67,15 +74,7 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 		str += " (" + e.getX();
 		str += " , " + e.getY() + ")";
 		StatusPanel.setStatus(str,StatusPanel.PRESSED_RELEASED_STATUS_IND);
-		
-		
-		
-		if(isDraggingObjected){
-			//Check if move was allowed or snapBack
-			//draggedSprite.snapBack();
-			isDraggingObjected = false;
-			draggedSprite = null;
-		}
+		model.releasedPoint(e.getPoint(), inside);
 	}
 
 	@Override
@@ -84,7 +83,7 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 		str += " (" + e.getX();
 		str += " , " + e.getY() + ")";
 		StatusPanel.setStatus(str,StatusPanel.IN_OUT_STATUS_IND);
-		isExited = false;
+		inside = true;
 	}
 
 	@Override
@@ -93,13 +92,7 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 		str += " (" + e.getX();
 		str += " , " + e.getY() + ")";
 		StatusPanel.setStatus(str,StatusPanel.IN_OUT_STATUS_IND);
-		isExited = true;
-		if(isDraggingObjected){
-			draggedSprite.snapBack();
-			isDraggingObjected = false;
-			draggedSprite = null;
-		}
-		
+		inside = false;
 	}
 
 	@Override
@@ -108,11 +101,7 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 		str += " (" + e.getX();
 		str += " , " + e.getY() + ")";
 		StatusPanel.setStatus(str,StatusPanel.DRAGGED_STATUS_IND);
-		
-		if(isDraggingObjected){
-			draggedSprite.setMiddlePointLocation(e.getPoint());
-			//repaint();
-		}
+		model.pointDragged(e.getPoint(), inside);
 	}
 
 	@Override
@@ -135,8 +124,12 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 			if(time2sleep<0){
 				time2sleep = 1L;
 			}
+			printSleepCounter++;
+			if(printSleepCounter == 4){
+				printSleepCounter = 0;
+				StatusPanel.setStatus("Sleep: "+time2sleep , StatusPanel.SLEEP_TIME_STATUS_IND);
+			}
 			
-			StatusPanel.setStatus("Sleep: "+time2sleep , StatusPanel.SLEEP_TIME_STATUS_IND);
 			
 			try {
 				Thread.sleep(time2sleep);
@@ -159,7 +152,9 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 		Graphics g = buffer.getDrawGraphics();
 		
 		this.paint(g);
-		//TODO paint background sprite first
+		for (Sprite spr : board) {
+			spr.draw(g);
+		}
 		for (Sprite spr : sprites) {
 			spr.draw(g);
 		}

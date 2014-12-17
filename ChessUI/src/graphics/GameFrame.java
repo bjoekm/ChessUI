@@ -33,7 +33,7 @@ public class GameFrame extends JFrame {
 		
 		//Setup South panel layout
 		StatusPanel statusLabel = StatusPanel.getInstance();
-		statusLabel.setPreferredSize(new Dimension(this.getWidth(), 20));
+		statusLabel.setPreferredSize(new Dimension(this.getWidth(), 40));
 		statusLabel.setBackground(Color.GREEN);
 		
 		//Setup East panel

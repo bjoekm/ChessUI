@@ -11,6 +11,6 @@ public interface IGameModel {
 	public ArrayList<Sprite> getGameObjects();
 	public void pointClicked(Point p);
 	public void pointPressed(Point p);
-	public void releasedPoint(Point p);
-	public void pointDragged(Point p);
+	public void releasedPoint(Point p, boolean inside);
+	public void pointDragged(Point p, boolean inside);
 }

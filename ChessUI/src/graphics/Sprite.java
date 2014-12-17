@@ -20,11 +20,18 @@ public class Sprite extends Rectangle {
 		this(null, Color.ORANGE, 30, 40, true, true);
 	}
 	
+	public Sprite(Color c, int width, int height, boolean isMoveable, boolean isSelectable){
+		this(null, c, width, height, isMoveable, isSelectable);
+	}
+	
 	public Sprite(Image img){
 		this(img, Color.ORANGE, img.getHeight(null), img.getWidth(null), true, true);
 	}
 	
-	public Sprite(Image img,Color c, int width, int height, boolean isMoveable, boolean isSelectable){
+	/**
+	 * Private to avoid creating an instance with img and width and height something else.
+	 */
+	private Sprite(Image img,Color c, int width, int height, boolean isMoveable, boolean isSelectable){
 		this.img = img;
 		this.width = width;
 		this.height = height;

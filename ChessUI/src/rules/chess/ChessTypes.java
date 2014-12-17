@@ -1,4 +1,4 @@
-package rules;
+package rules.chess;
 
 public enum ChessTypes {
 	PAWN,

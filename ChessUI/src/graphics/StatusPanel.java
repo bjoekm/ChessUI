@@ -1,5 +1,6 @@
 package graphics;
 
+import java.awt.GridLayout;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -45,22 +46,23 @@ public final class StatusPanel extends JPanel {
 		//Setup JLabel(s) with text(s)
 		statusLabels = new ArrayList<JLabel>();
 		numberOfLabels = 0;
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		//setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		setLayout(new GridLayout(2, 5));
 		addLabel(); //0
 		addLabel(); //1
 		addLabel(); //2
 		addLabel(); //3
 		addLabel(); //4
 		addLabel(); //5
+		addLabel();
+		addLabel();
 	}
 	
 	private void addLabel(){
 		JLabel tmp = new JLabel(defaultStatus(numberOfLabels)+ "status");
-		tmp.setHorizontalAlignment(SwingConstants.LEFT);
+		//tmp.setHorizontalAlignment(SwingConstants.LEFT);
 		add(tmp);
 		statusLabels.add(tmp);
 		numberOfLabels++;
 	}
-	
-	
 }
