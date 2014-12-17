@@ -78,12 +78,16 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		String str = "Inside ";
+		str += " (" + e.getX();
+		str += " , " + e.getY() + ")";
 		StatusPanel.setStatus(str,StatusPanel.IN_OUT_STATUS_IND);
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		String str = "Outside";
+		str += " (" + e.getX();
+		str += " , " + e.getY() + ")";
 		StatusPanel.setStatus(str,StatusPanel.IN_OUT_STATUS_IND);
 		
 		if(isDraggingObjected){
