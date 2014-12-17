@@ -12,8 +12,10 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class GameCanvas extends Canvas implements MouseListener, MouseMotionListener {
 
-	ArrayList<Sprite> sprites;
-	Sprite background;
+	private ArrayList<Sprite> sprites;
+	private Sprite background;
+	private boolean isDragginObjected;
+	private Sprite draggedSprite = null;
 	
 	public GameCanvas(){
 		this.setBackground(Color.CYAN);
@@ -22,11 +24,13 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 		
 		Sprite tmp = new Sprite();
 		sprites.add(tmp);
-		this.addMouseListener(this);
+		addMouseListener(this);
+		addMouseMotionListener(this);
 	}
 	
 	public void paint(Graphics g){
 		super.paint(g);
+		//TODO paint background first, if we have one
 		for (Sprite spr : sprites) {
 			spr.draw(g);
 		}
@@ -34,39 +38,55 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		StatusPanel.setStatus("Clicked test",0);
-		System.out.println("Clicked test");
+		String str = "Clicked: ";
+		str += " (" + e.getX();
+		str += " , " + e.getY() + ")";
+		StatusPanel.setStatus(str,0);
+		//System.out.println("Clicked test");
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		System.out.println("Pressed test");
+		String str = "Pressed ";
+		str += " (" + e.getX();
+		str += " , " + e.getY() + ")";
+		StatusPanel.setStatus(str,3);
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		System.out.println("Released test");
+		String str = "Released";
+		str += " (" + e.getX();
+		str += " , " + e.getY() + ")";
+		StatusPanel.setStatus(str,3);
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		System.out.println("entered test");
+		String str = "Inside ";
+		StatusPanel.setStatus(str,2);
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		System.out.println("exited test");
+		String str = "Outside";
+		StatusPanel.setStatus(str,2);
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		Point p = e.getPoint();
-		//showStatus("mouse Dragged to " + p);
+		String str = "Dragged: ";
+		str += " (" + e.getX();
+		str += " , " + e.getY() + ")";
+		StatusPanel.setStatus(str,1);
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		
+		String str = "Moved: ";
+		str += " (" + e.getX();
+		str += " , " + e.getY() + ")";
+		StatusPanel.setStatus(str,4);
 	}
 	
 	

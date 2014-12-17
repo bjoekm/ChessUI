@@ -11,6 +11,7 @@ public class Sprite extends Rectangle {
 	
 	private Image img;
 	private Color dummyColor=Color.ORANGE;
+	private boolean moveable = true;
 	
 	public Sprite(){
 		this.img = null;
@@ -43,5 +44,13 @@ public class Sprite extends Rectangle {
 	
 	public void setDummyColor(Color c){
 		dummyColor = c;
+	}
+
+	public boolean isMoveable() {
+		return moveable;
+	}
+
+	public void setMoveable(boolean moveable) {
+		this.moveable = moveable;
 	}
 }

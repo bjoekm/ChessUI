@@ -12,7 +12,7 @@ public final class StatusPanel extends JPanel {
 
 	private static StatusPanel instance = null;
 	private static ArrayList<JLabel> statusLabels;
-	private static int numberOfLabels = 0;
+	private static int numberOfLabels = -1; //Start on -1 to make setStatus fail even when not initalized. 
 	
 	public static StatusPanel getInstance(){
 		if(instance == null){
@@ -25,18 +25,28 @@ public final class StatusPanel extends JPanel {
 		if(labelIndex<0 || labelIndex>=numberOfLabels){
 			return;
 		}
-		statusLabels.get(labelIndex).setText(s);
+		String labelInfo = defaultStatus(labelIndex);
+		statusLabels.get(labelIndex).setText(labelInfo + s);
 	}
 	
-	private  StatusPanel(){
+	private static String defaultStatus(int labelIndex){	
+		return " | " + labelIndex + ". ";
+	}
+	
+	private StatusPanel(){
 		//Setup JLabel(s) with text(s)
 		statusLabels = new ArrayList<JLabel>();
+		numberOfLabels = 0;
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		addLabel();
+		addLabel();
+		addLabel();
+		addLabel();
 		addLabel();
 	}
 	
 	private void addLabel(){
-		JLabel tmp = new JLabel("status");
+		JLabel tmp = new JLabel(defaultStatus(numberOfLabels)+ "status");
 		tmp.setHorizontalAlignment(SwingConstants.LEFT);
 		add(tmp);
 		statusLabels.add(tmp);
