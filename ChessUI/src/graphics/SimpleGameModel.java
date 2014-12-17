@@ -55,6 +55,7 @@ public class SimpleGameModel implements IGameModel{
 	@Override
 	public void releasedPoint(Point p, boolean inside) {
 		if(!inside){
+			draggedSprite.snapBack();
 			return;
 		}
 		
