@@ -83,4 +83,12 @@ public class Sprite extends Rectangle {
 	public void setMoveable(boolean moveable) {
 		this.moveable = moveable;
 	}
+
+	public boolean isSelectable() {
+		return selectable;
+	}
+	
+	public void setSelectable(boolean selectable) {
+		this.selectable = selectable;
+	}
 }
