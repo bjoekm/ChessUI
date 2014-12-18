@@ -9,6 +9,13 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
 
+/**
+ * The Sprite class contains the graphical info of a game entity, ie. entity's the actual position, bounding box and its graphical appearance (ie. its image). <p>
+ * 
+ * Keeps track of last "allowed" position to be able to return there if user input tries to place it in an disallowed space (example outside the canvas).<p>
+ * Uses some local classes to allow for easy test sprites and null-object sprites to be created. <br>
+ * @author Bjorn
+ */
 @SuppressWarnings("serial")
 public class Sprite extends Rectangle {
 	
@@ -34,8 +41,8 @@ public class Sprite extends Rectangle {
 	
 	public Sprite(Image img, boolean isMoveable, boolean isSelectable){
 		this.img = img;
-		this.width = img.getHeight(null); //No callback object is supplied - assumes image is already loaded. 
-		this.height = img.getWidth(null); //No callback object is supplied - assumes image is already loaded. 
+		this.width = img.getHeight(null); //No callback object is supplied as it is assumed that image already was loaded completely. 
+		this.height = img.getWidth(null); //No callback object is supplied as it is assumed that image already was loaded completely. 
 		this.moveable = isMoveable;
 		this.selectable = isSelectable;
 		snapBackPoint = new Point();
@@ -44,7 +51,7 @@ public class Sprite extends Rectangle {
 	public void draw(Graphics g){
 		int intx = Math.round((float)getX());
 		int inty = Math.round((float)getY());
-		g.drawImage(img, intx, inty, null);
+		g.drawImage(img, intx, inty, null); //No callback object is supplied as it is assumed that image already was loaded completely. 
 	}
 	
 	public void setMiddlePointLocation(Point p){
@@ -107,6 +114,11 @@ class SimpleImage extends BufferedImage {
 	}
 }
 
+/**
+ * Creates a very small sprite outside the canvas bounds. If ever asked to be drawn/moved it just does nothing at all.<p>
+ * 
+ * This allows the gamemodel to always send appropriate commands to currently "selected" sprite without bothering a null check at all times. 
+ */
 @SuppressWarnings("serial")
 class NullSprite extends Sprite {
 
