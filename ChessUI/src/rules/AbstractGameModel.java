@@ -7,8 +7,7 @@ import java.util.ArrayList;
 
 public class AbstractGameModel implements IGameModel {
 
-	private boolean isDraggingObjected = false;
-	private Sprite draggedSprite = null;
+	private Sprite draggedSprite = Sprite.NULL;
 	protected ArrayList<Sprite> sprites;
 	protected ArrayList<Sprite> board;
 
@@ -25,7 +24,7 @@ public class AbstractGameModel implements IGameModel {
 	}
 
 	public void pointClicked(Point p) {
-		for (Sprite  sprite : sprites) {
+		for (Sprite sprite : sprites) {
 			if(sprite.isSelectable()){
 				if(sprite.contains(p)){
 					//Set selected
@@ -35,11 +34,10 @@ public class AbstractGameModel implements IGameModel {
 	}
 
 	public void pointPressed(Point p) {
-		for (Sprite  sprite : sprites) {
+		for (Sprite sprite : sprites) {
 			if(sprite.isMoveable()){
 				if(sprite.contains(p)){
 					sprite.setSnapBackPoint();
-					isDraggingObjected = true;
 					draggedSprite = sprite;
 				}
 			}
@@ -47,22 +45,17 @@ public class AbstractGameModel implements IGameModel {
 	}
 
 	public void releasedPoint(Point p, boolean inside) {
-		if(isDraggingObjected){
-			if(!inside){
-				draggedSprite.snapBack();
-				return;
-			}
-			//Check if move was allowed or snapBack
-			//draggedSprite.snapBack();
-			isDraggingObjected = false;
-			draggedSprite = null;
+		if(!inside){
+			draggedSprite.snapBack();
+			return;
 		}
+		//Check if move was allowed or snapBack
+		//draggedSprite.snapBack();
+		draggedSprite = Sprite.NULL;
 	}
 
 	public void pointDragged(Point p, boolean inside) {
-		if(isDraggingObjected){
-			draggedSprite.setMiddlePointLocation(p);
-		}
+		draggedSprite.setMiddlePointLocation(p);
 	}
 
 }

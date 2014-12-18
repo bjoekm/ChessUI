@@ -5,58 +5,46 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 
 @SuppressWarnings("serial")
 public class Sprite extends Rectangle {
 	
 	private Image img;
-	private Color dummyColor;
+
 	private boolean moveable;
 	private boolean selectable;
 	private Point snapBackPoint;
 	
+	public static final Sprite NULL = new NullSprite();
 	
 	public Sprite(){
-		this(null, Color.ORANGE, 30, 40, true, true);
+		this(new SimpleImage(), true, true);
 	}
 	
-	public Sprite(Color c, int width, int height, boolean isMoveable, boolean isSelectable){
-		this(null, c, width, height, isMoveable, isSelectable);
+	public Sprite(int width, int height, boolean isMoveable, boolean isSelectable){
+		this(new SimpleImage(width, height), isMoveable, isSelectable);
 	}
 	
 	public Sprite(Image img){
-		this(img, Color.ORANGE, img.getHeight(null), img.getWidth(null), true, true);
+		this(img, true, true);
 	}
 	
-	/**
-	 * Private to avoid creating an instance with img and width and height something else.
-	 */
-	private Sprite(Image img,Color c, int width, int height, boolean isMoveable, boolean isSelectable){
+	public Sprite(Image img, boolean isMoveable, boolean isSelectable){
 		this.img = img;
-		this.width = width;
-		this.height = height;
+		this.width = img.getHeight(null); //No callback object is supplied - assumes image is already loaded. 
+		this.height = img.getWidth(null); //No callback object is supplied - assumes image is already loaded. 
 		this.moveable = isMoveable;
 		this.selectable = isSelectable;
 		snapBackPoint = new Point();
-		dummyColor = c;
 	}
 	
 	public void draw(Graphics g){
-		if(img==null){
-			drawDummyRect(g);
-		}
 		int intx = Math.round((float)getX());
 		int inty = Math.round((float)getY());
 		g.drawImage(img, intx, inty, null);
-	}
-	
-	private void drawDummyRect(Graphics g){
-		g.setColor(dummyColor);
-		g.fillRect(x, y, width, height);
-	}
-	
-	public void setDummyColor(Color c){
-		dummyColor = c;
 	}
 	
 	public void setMiddlePointLocation(Point p){
@@ -90,5 +78,55 @@ public class Sprite extends Rectangle {
 	
 	public void setSelectable(boolean selectable) {
 		this.selectable = selectable;
+	}
+}
+
+/**
+ * Allows for the creation of a simple image filled with just one color. <p>
+ *
+ */
+class SimpleImage extends BufferedImage {
+
+	public static int DEFAULT_WIDTH = 30;
+	public static int DEFAULT_HEIGHT = 40;
+	public static Color DEFAULT_COLOR = Color.ORANGE;
+
+	public SimpleImage(){
+		this(DEFAULT_WIDTH,DEFAULT_HEIGHT, DEFAULT_COLOR);
+	}
+	
+	public SimpleImage(int width, int height){
+		this(width,height, DEFAULT_COLOR);
+	}
+	
+	public SimpleImage(int width, int height, Color c) {
+		super(width,height, BufferedImage.TYPE_INT_ARGB);
+		Graphics g = this.getGraphics();
+		g.setColor(c);
+		g.fillRect(0, 0, width,height);
+	}
+}
+
+@SuppressWarnings("serial")
+class NullSprite extends Sprite {
+
+	public NullSprite(){
+		super(new SimpleImage(1,1, Color.BLACK), false, false);
+		this.setLocation(-50, -50);
+	}
+	
+	@Override
+	public void draw(Graphics g){
+		//Do nothing
+	}
+	
+	@Override
+	public void setMiddlePointLocation(Point p){
+		//Do nothing
+	}
+	
+	@Override
+	public void setSnapBackPoint(){
+		//Do nothing
 	}
 }
