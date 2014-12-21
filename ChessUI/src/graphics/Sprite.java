@@ -70,6 +70,10 @@ public class Sprite extends Rectangle {
 		x = snapBackPoint.x;
 		y = snapBackPoint.y;
 	}
+	
+	public boolean isNull(){
+		return false;
+	}
 
 	public boolean isMoveable() {
 		return moveable;
@@ -140,5 +144,9 @@ class NullSprite extends Sprite {
 	@Override
 	public void setSnapBackPoint(){
 		//Do nothing
+	}
+	
+	public boolean isNull(){
+		return true;
 	}
 }

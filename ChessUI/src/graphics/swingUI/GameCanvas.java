@@ -40,8 +40,8 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 	 */
 	public static final long DEFAULT_SLEEP = 20L;
 	private int printSleepCounter = 0; //Difficult to read sleep time i status bar i printing at 50 Hz
-	private ArrayList<Sprite> sprites; //Sprites drawn second
-	private ArrayList<Sprite> board;//Sprites drawn first
+	private ArrayList<? extends Sprite> sprites; //Sprites drawn second
+	private ArrayList<? extends Sprite> board;//Sprites drawn first
 
 	private boolean inside = true; //True if mouse pointer is inside the canvas bounds
 	private IGameModel model;
@@ -50,7 +50,7 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 		this.setBackground(Color.CYAN);
 		this.model = model;
 		board = model.getBoard();
-		sprites = model.getGameObjects();
+		sprites =  model.getGameObjects();
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		this.setIgnoreRepaint(true);
@@ -71,7 +71,7 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 	public void mousePressed(MouseEvent e) {
 		String str = "Pressed ";
 		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.PRESSED_RELEASED_STATUS_IND);
-		model.pointPressed(e.getPoint());
+		model.pointClicked(e.getPoint());
 	}
 
 	@Override

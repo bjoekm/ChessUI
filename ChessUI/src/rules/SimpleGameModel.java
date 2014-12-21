@@ -13,13 +13,13 @@ import java.util.ArrayList;
 public class SimpleGameModel extends AbstractGameModel{
 
 	public SimpleGameModel(){
-		sprites = new ArrayList<Sprite>();
-		board = new ArrayList<Sprite>();
+		pieces = new ArrayList<Piece>();
+		board = new ArrayList<Board>();
 		addDummySprite();
 	}
 	
 	private void addDummySprite(){
-		Sprite tmp  = new Sprite();
-		sprites.add(tmp);
+		Piece tmp  = new Piece();
+		pieces.add(tmp);
 	}
 }
