@@ -27,6 +27,7 @@ public class AbstractGameModel implements IGameModel {
 		for (Sprite sprite : sprites) {
 			if(sprite.isSelectable()){
 				if(sprite.contains(p)){
+					
 					//Set selected
 				}
 			}
