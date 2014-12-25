@@ -26,22 +26,24 @@ public abstract class AbstractGameModel implements IGameModel {
 	
 	public void pieceSelected(Sprite selected){
 		if(selected != selectedSprite){
-			pieceDeselected(selectedSprite);
+			pieceDeselected();
 			selected.setSnapBackPoint();
 			selectedSprite = selected;
 		}
 	}
 	
-	public void pieceDeselected(Sprite oldSprite){
+	public void pieceDeselected(){
 		selectedSprite = Sprite.NULL;
 	}
 	
-	public void movePiece(Sprite selectedSprite2, Point newPos){
-		if(selectedSprite2.isMoveable() && moveIsAllowed(selectedSprite2, newPos)){
-			selectedSprite2.setMiddlePointLocation(newPos);
-			pieceDeselected(selectedSprite2);
-		}else{
-			selectedSprite2.snapBack();
+	public void movePiece( Point newPos){
+		if(selectedSprite.isMoveable()){
+			if(moveIsAllowed(selectedSprite, newPos)){
+				selectedSprite.setMiddlePointLocation(newPos);
+				pieceDeselected();
+			}else{
+				selectedSprite.snapBack();
+			}
 		}
 	}
 	
@@ -64,7 +66,7 @@ public abstract class AbstractGameModel implements IGameModel {
 			selectedSprite.snapBack();
 			return;
 		}
-		movePiece(selectedSprite, p);
+		movePiece(p);
 	}
 
 	public void pointDragged(Point p, boolean inside) {

@@ -63,6 +63,7 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		String str = "Clicked: ";
+		EventDisplayPanel.addEvent(str);
 		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.CLICKED_STATUS_IND);
 		model.pointClicked(e.getPoint());
 	}
@@ -70,6 +71,7 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 	@Override
 	public void mousePressed(MouseEvent e) {
 		String str = "Pressed ";
+		EventDisplayPanel.addEvent(str);
 		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.PRESSED_RELEASED_STATUS_IND);
 		model.pointClicked(e.getPoint());
 	}
@@ -77,8 +79,10 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		String str = "Released";
+		EventDisplayPanel.addEvent(str);
 		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.PRESSED_RELEASED_STATUS_IND);
 		model.releasedPoint(e.getPoint(), inside);
+		System.out.println(e.toString());
 	}
 
 	@Override
