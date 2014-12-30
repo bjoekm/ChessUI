@@ -21,6 +21,7 @@ public class ChessBoard extends Board {
 	public ChessBoard(Image img) {
 		super(img);
 		this.setMoveable(false);
+		this.setSelectable(false);
 		initNewGame();
 	}
 	

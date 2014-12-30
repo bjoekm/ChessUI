@@ -66,7 +66,7 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 		String str = "Clicked: ";
 		EventDisplayPanel.addEvent(str);
 		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.CLICKED_STATUS_IND);
-		model.pointClicked(e.getPoint());
+		//model.pointClicked(e.getPoint()); - pressed is always triggered. No need to act on this on to
 	}
 
 	@Override
@@ -80,12 +80,12 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		String str = "Released";
-		EventDisplayPanel.addEvent(str);
 		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.PRESSED_RELEASED_STATUS_IND);
 		if(dragging){
+			str += " dragging";
 			model.releasedPoint(e.getPoint(), inside);
 		}
-		System.out.println(e.toString());
+		EventDisplayPanel.addEvent(str );
 		dragging = false;
 	}
 

@@ -28,7 +28,7 @@ public class Sprite extends Rectangle {
 	public static final Sprite NULL = new NullSprite();
 	
 	public Sprite(){
-		this(new SimpleImage(), true, true);
+		this(new SimpleImage());
 	}
 	
 	public Sprite(int width, int height, boolean isMoveable, boolean isSelectable){
@@ -41,8 +41,8 @@ public class Sprite extends Rectangle {
 	
 	public Sprite(Image img, boolean isMoveable, boolean isSelectable){
 		this.img = img;
-		this.width = img.getHeight(null); //No callback object is supplied as it is assumed that image already was loaded completely. 
-		this.height = img.getWidth(null); //No callback object is supplied as it is assumed that image already was loaded completely. 
+		this.width = img.getWidth(null); //No callback object is supplied as it is assumed that image already was loaded completely. 
+		this.height = img.getHeight(null); //No callback object is supplied as it is assumed that image already was loaded completely. 
 		this.moveable = isMoveable;
 		this.selectable = isSelectable;
 		snapBackPoint = new Point(0,0);
@@ -51,6 +51,8 @@ public class Sprite extends Rectangle {
 	public void draw(Graphics g){
 		int intx = Math.round((float)getX());
 		int inty = Math.round((float)getY());
+		g.setColor(Color.LIGHT_GRAY);
+		g.fillRect(intx, inty, width, width);
 		g.drawImage(img, intx, inty, null); //No callback object is supplied as it is assumed that image already was loaded completely. 
 	}
 	
@@ -146,7 +148,15 @@ class NullSprite extends Sprite {
 		//Do nothing
 	}
 	
+	@Override
 	public boolean isNull(){
 		return true;
+	}
+	
+	@Override
+	public String toString(){
+		String str = super.toString();
+		str = "NULL-Sprite: "+ str;
+		return str;
 	}
 }

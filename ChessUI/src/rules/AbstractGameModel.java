@@ -1,6 +1,7 @@
 package rules;
 
 import graphics.Sprite;
+import graphics.swingUI.StatusPanel;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -24,16 +25,24 @@ public abstract class AbstractGameModel implements IGameModel {
 		return pieces;
 	}
 	
+	public Sprite getSelected(){
+		return selectedSprite;
+	}
+	
 	public void pieceSelected(Sprite selected){
 		if(selected != selectedSprite){
 			pieceDeselected();
 			selected.setSnapBackPoint();
 			selectedSprite = selected;
+			System.out.println("selected");
 		}
+		StatusPanel.setStatus(selectedSprite.toString(),StatusPanel.SPRITE_SELECTION);
 	}
 	
 	public void pieceDeselected(){
+		System.out.println("desleceted");
 		selectedSprite = Sprite.NULL;
+		StatusPanel.setStatus(selectedSprite.toString(),StatusPanel.SPRITE_SELECTION);
 	}
 	
 	public void movePiece(Point newPos){
@@ -52,13 +61,31 @@ public abstract class AbstractGameModel implements IGameModel {
 	}
 
 	public void pointClicked(Point p) {
+		boolean selected = false;
 		for (Sprite sprite : pieces) {
-			if(sprite.isSelectable()){
-				if(sprite.contains(p)){
+			if(sprite.contains(p)){
+				if(sprite.isSelectable()){
+					System.out.println("selectable");
 					pieceSelected(sprite);
+					selected = true;
+					
 				}
 			}
 		}
+
+		if(!selected){
+			for (Sprite sprite : board) {
+				if(sprite.contains(p)){
+					if(sprite.isSelectable()){
+						System.out.println("selectable");
+						pieceSelected(sprite);	
+					}else{
+						movePiece(p);
+					}
+				}
+			}
+		}
+		
 	}
 
 	public void releasedPoint(Point p, boolean inside) {
@@ -66,7 +93,9 @@ public abstract class AbstractGameModel implements IGameModel {
 			selectedSprite.snapBack();
 			return;
 		}
+		System.out.println("moved 2");
 		movePiece(p);
+		
 	}
 
 	public void pointDragged(Point p, boolean inside) {
@@ -74,5 +103,4 @@ public abstract class AbstractGameModel implements IGameModel {
 			selectedSprite.setMiddlePointLocation(p);
 		}
 	}
-
 }
