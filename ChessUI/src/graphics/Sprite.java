@@ -45,7 +45,7 @@ public class Sprite extends Rectangle {
 		this.height = img.getWidth(null); //No callback object is supplied as it is assumed that image already was loaded completely. 
 		this.moveable = isMoveable;
 		this.selectable = isSelectable;
-		snapBackPoint = new Point();
+		snapBackPoint = new Point(0,0);
 	}
 	
 	public void draw(Graphics g){

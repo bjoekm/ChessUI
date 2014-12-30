@@ -44,6 +44,7 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 	private ArrayList<? extends Sprite> board;//Sprites drawn first
 
 	private boolean inside = true; //True if mouse pointer is inside the canvas bounds
+	private boolean dragging = false;
 	private IGameModel model;
 	
 	public GameCanvas(IGameModel model){
@@ -81,8 +82,11 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 		String str = "Released";
 		EventDisplayPanel.addEvent(str);
 		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.PRESSED_RELEASED_STATUS_IND);
-		model.releasedPoint(e.getPoint(), inside);
+		if(dragging){
+			model.releasedPoint(e.getPoint(), inside);
+		}
 		System.out.println(e.toString());
+		dragging = false;
 	}
 
 	@Override
@@ -103,18 +107,19 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 	public void mouseDragged(MouseEvent e) {
 		int px = e.getX();
 		int py = e.getY();
+		dragging = true;
 		StatusPanel.setStatusWithPoint("Dragged: ", e.getPoint(),StatusPanel.DRAGGED_STATUS_IND);
 		
 		//Make sure the sent point is always inside the canvas bounds
-		if(px<DRAGGING_BORDER_SIZE){
+		if(px < DRAGGING_BORDER_SIZE){
 			px = DRAGGING_BORDER_SIZE;
-		}else if(px > getWidth() -DRAGGING_BORDER_SIZE){
-			px = getWidth()-DRAGGING_BORDER_SIZE;
+		}else if(px > getWidth() - DRAGGING_BORDER_SIZE){
+			px = getWidth() - DRAGGING_BORDER_SIZE;
 		}
 		
-		if(py<DRAGGING_BORDER_SIZE){
+		if(py < DRAGGING_BORDER_SIZE){
 			py = DRAGGING_BORDER_SIZE;
-		}else if(py > getHeight()-DRAGGING_BORDER_SIZE ){
+		}else if(py > getHeight() - DRAGGING_BORDER_SIZE ){
 			py = getHeight()-DRAGGING_BORDER_SIZE;
 		}
 		

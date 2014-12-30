@@ -1,10 +1,12 @@
 package rules.chess;
 
-public enum ChessTypes {
+public enum ChessType {
 	PAWN,
 	ROOK,
 	KNIGHT,
 	BISHOP,
 	KING,
-	QUEEN
+	QUEEN, 
+	EMPTY, 
+	FORBIDDEN
 }

@@ -36,7 +36,7 @@ public abstract class AbstractGameModel implements IGameModel {
 		selectedSprite = Sprite.NULL;
 	}
 	
-	public void movePiece( Point newPos){
+	public void movePiece(Point newPos){
 		if(selectedSprite.isMoveable()){
 			if(moveIsAllowed(selectedSprite, newPos)){
 				selectedSprite.setMiddlePointLocation(newPos);
@@ -47,7 +47,7 @@ public abstract class AbstractGameModel implements IGameModel {
 		}
 	}
 	
-	public boolean moveIsAllowed(Sprite selectedSprite2, Point newPos){
+	public boolean moveIsAllowed(Sprite selectedSzprite2, Point newPos){
 		return true;
 	}
 
