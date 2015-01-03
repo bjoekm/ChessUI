@@ -31,12 +31,18 @@ public class ChessPiece extends Piece{
 	}
 	
 	public static Image getChessPieceImage(ChessType ct, ChessSide cs){
-		
-		String fileEnding = ".png";
-		String path = "/";
-		String getStr = path+ cs.getText() + "_" + ct.getText() +"_" + ChessPiece.RESOLUTION + fileEnding;
-		
-		Image imgTest = new ImageIcon(ChessPiece.class.getClassLoader().getResource(getStr)).getImage();
+		Image imgTest;
+		if(cs != ChessSide.NEUTRAL){
+			String fileEnding = ".png";
+			String path = "/";
+			String getStr = path+ cs.getText() + "_" + ct.getText() +"_" + ChessPiece.RESOLUTION + fileEnding;
+			
+			imgTest = new ImageIcon(ChessPiece.class.getClassLoader().getResource(getStr)).getImage();
+			
+		}else{
+			String getStr = "/black_king_45px.png";
+			imgTest = new ImageIcon(ChessPiece.class.getClassLoader().getResource(getStr)).getImage();
+		}
 		return imgTest;
 	}
 	
