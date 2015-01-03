@@ -1,6 +1,8 @@
-package graphics.swingUI;
+package graphics.boardView;
 
 import graphics.Sprite;
+import graphics.swingUI.EventDisplayPanelSingelton;
+import graphics.swingUI.StatusPanelSingelton;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -12,8 +14,8 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
-import rules.IGameModel;
-import rules.SimpleGameModel;
+import model.IGameModel;
+import model.SimpleGameModel;
 
 /**
  * Tasked with updating the graphics and handling mouse events concerning the game<p>
@@ -45,7 +47,6 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 
 	private boolean inside = true; //True if mouse pointer is inside the canvas bounds
 	private boolean dragging = false;
-	private IGameModel model;
 	
 	public GameCanvas(IGameModel model){
 		this.setBackground(Color.CYAN);
@@ -64,42 +65,42 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		String str = "Clicked: ";
-		EventDisplayPanel.addEvent(str);
-		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.CLICKED_STATUS_IND);
+		EventDisplayPanelSingelton.addEvent(str);
+		StatusPanelSingelton.setStatusWithPoint(str,e.getPoint(),StatusPanelSingelton.CLICKED_STATUS_IND);
 		//model.pointClicked(e.getPoint()); - pressed is always triggered. No need to act on this on to
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		String str = "Pressed ";
-		EventDisplayPanel.addEvent(str);
-		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.PRESSED_RELEASED_STATUS_IND);
-		model.pointClicked(e.getPoint());
+		EventDisplayPanelSingelton.addEvent(str);
+		StatusPanelSingelton.setStatusWithPoint(str,e.getPoint(),StatusPanelSingelton.PRESSED_RELEASED_STATUS_IND);
+		model.tileClicked(e.getPoint());
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		String str = "Released";
-		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.PRESSED_RELEASED_STATUS_IND);
+		StatusPanelSingelton.setStatusWithPoint(str,e.getPoint(),StatusPanelSingelton.PRESSED_RELEASED_STATUS_IND);
 		if(dragging){
 			str += " dragging";
 			model.releasedPoint(e.getPoint(), inside);
 		}
-		EventDisplayPanel.addEvent(str );
+		EventDisplayPanelSingelton.addEvent(str );
 		dragging = false;
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		String str = "Inside ";
-		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.IN_OUT_STATUS_IND);
+		StatusPanelSingelton.setStatusWithPoint(str,e.getPoint(),StatusPanelSingelton.IN_OUT_STATUS_IND);
 		inside = true;
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		String str = "Outside";
-		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.IN_OUT_STATUS_IND);
+		StatusPanelSingelton.setStatusWithPoint(str,e.getPoint(),StatusPanelSingelton.IN_OUT_STATUS_IND);
 		inside = false;
 	}
 
@@ -108,7 +109,7 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 		int px = e.getX();
 		int py = e.getY();
 		dragging = true;
-		StatusPanel.setStatusWithPoint("Dragged: ", e.getPoint(),StatusPanel.DRAGGED_STATUS_IND);
+		StatusPanelSingelton.setStatusWithPoint("Dragged: ", e.getPoint(),StatusPanelSingelton.DRAGGED_STATUS_IND);
 		
 		//Make sure the sent point is always inside the canvas bounds
 		if(px < DRAGGING_BORDER_SIZE){
@@ -129,7 +130,7 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		String str = "Moved: ";
-		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.MOUSE_MOVED_STATUS_IND);
+		StatusPanelSingelton.setStatusWithPoint(str,e.getPoint(),StatusPanelSingelton.MOUSE_MOVED_STATUS_IND);
 	}
 
 	@Override
@@ -147,7 +148,7 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 			printSleepCounter++;
 			if(printSleepCounter == 4){
 				printSleepCounter = 0;
-				StatusPanel.setStatus("Sleep: "+time2sleep , StatusPanel.SLEEP_TIME_STATUS_IND);
+				StatusPanelSingelton.setStatus("Sleep: "+time2sleep , StatusPanelSingelton.SLEEP_TIME_STATUS_IND);
 			}
 			
 			try {

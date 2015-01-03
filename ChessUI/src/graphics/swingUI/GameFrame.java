@@ -1,5 +1,7 @@
 package graphics.swingUI;
 
+import graphics.boardView.GameCanvas;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -48,12 +50,12 @@ public class GameFrame extends JFrame {
 		north.setBackground(Color.RED);
 		
 		//Setup South panel layout
-		StatusPanel statusLabel = StatusPanel.getInstance();
+		StatusPanelSingelton statusLabel = StatusPanelSingelton.getInstance();
 		statusLabel.setPreferredSize(new Dimension(this.getWidth(), 40));
 		statusLabel.setBackground(Color.GREEN);
 		
 		//Setup East panel
-		EventDisplayPanel east = EventDisplayPanel.getInstance();
+		EventDisplayPanelSingelton east = EventDisplayPanelSingelton.getInstance();
 		east.setPreferredSize(new Dimension(250, this.getHeight()));
 		east.setBackground(Color.BLUE);
 		

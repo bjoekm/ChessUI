@@ -1,4 +1,4 @@
-package rules.chess;
+package model.chess;
 
 public enum ChessType {
 	PAWN("pawn"),
@@ -6,9 +6,8 @@ public enum ChessType {
 	KNIGHT("knight"),
 	BISHOP("bishop"),
 	KING("king"),
-	QUEEN("queen"), 
-	EMPTY("empty"), 
-	FORBIDDEN("forbidden");
+	QUEEN("queen"),
+	NULL("null");
 	
 	private final String text;
 

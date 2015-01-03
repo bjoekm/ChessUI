@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
-public final class StatusPanel extends JPanel {
+public final class StatusPanelSingelton extends JPanel {
 
 	public static final int CLICKED_STATUS_IND = 0;
 	public static final int DRAGGED_STATUS_IND = 1;
@@ -21,13 +21,13 @@ public final class StatusPanel extends JPanel {
 	public static final int SPRITE_SELECTION = 6;
 	
 	
-	private static StatusPanel instance = null;
+	private static StatusPanelSingelton instance = null;
 	private static ArrayList<JLabel> statusLabels;
 	private static int numberOfLabels = -1; //Start on -1 to make setStatus fail even when not initalized. 
 	
-	public static StatusPanel getInstance(){
+	public static StatusPanelSingelton getInstance(){
 		if(instance == null){
-			instance = new StatusPanel();
+			instance = new StatusPanelSingelton();
 		}
 		return instance;	
 	}
@@ -56,7 +56,7 @@ public final class StatusPanel extends JPanel {
 		return " | " + labelIndex + ". ";
 	}
 	
-	private StatusPanel(){
+	private StatusPanelSingelton(){
 		//Setup JLabel(s) with text(s)
 		statusLabels = new ArrayList<JLabel>();
 		numberOfLabels = 0;

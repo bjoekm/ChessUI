@@ -1,10 +1,11 @@
-package rules.chess;
+package model.chess;
 
 public enum ChessSide {
 
 	BLACK("black"),
 	WHITE("white"), 
-	NEUTRAL("neutral");
+	EMPTY("empty"), 
+	FORBIDDEN("forbidden");
 	
 	private final String text;
 

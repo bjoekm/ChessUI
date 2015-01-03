@@ -1,13 +1,12 @@
-package rules.chess;
+package model.chess;
 
 import java.awt.Image;
 
-import rules.Board;
 
 @SuppressWarnings("serial")
-public class ChessBoard extends Board {
+public class ChessBoard {
 
-	ChessPiece board[][];
+	ChessTile board[][];
 	
 	public int boardSize = 8;
 	public int forbiddenBorder = 2;
@@ -18,22 +17,19 @@ public class ChessBoard extends Board {
 	//a1 maps to index (x,y) = (0,0);
 	//May result in requests for negative places: will be handled by board
 	
-	public ChessBoard(Image img) {
-		super(img);
-		this.setMoveable(false);
-		this.setSelectable(false);
+	public ChessBoard() {
 		initNewGame();
 	}
 	
 	public void clearBoard(){
-		board = new ChessPiece[totalGridSize][totalGridSize];
+		board = new ChessTile[totalGridSize][totalGridSize];
 	}
 	
 	/**
 	 * @param x - an integer between -2 and 9 => will translated to something between 0 and 11 where 2 to 9 are "allowed" squares
 	 * @param y - an integer between -2 and 9 => will translated to something between 0 and 11 where 2 to 9 are "allowed" squares
 	 */
-	public ChessPiece getPieceAtPos(int x, int y){
+	public ChessTile getPieceAtPos(int x, int y){
 		x += forbiddenBorder;
 		y += forbiddenBorder;
 		return board[x][y];

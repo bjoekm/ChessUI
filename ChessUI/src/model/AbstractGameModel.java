@@ -1,7 +1,7 @@
-package rules;
+package model;
 
 import graphics.Sprite;
-import graphics.swingUI.StatusPanel;
+import graphics.swingUI.StatusPanelSingelton;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -29,21 +29,7 @@ public abstract class AbstractGameModel implements IGameModel {
 		return selectedSprite;
 	}
 	
-	public void pieceSelected(Sprite selected){
-		if(selected != selectedSprite){
-			pieceDeselected();
-			selected.setSnapBackPoint();
-			selectedSprite = selected;
-			System.out.println("selected");
-		}
-		StatusPanel.setStatus(selectedSprite.toString(),StatusPanel.SPRITE_SELECTION);
-	}
-	
-	public void pieceDeselected(){
-		System.out.println("desleceted");
-		selectedSprite = Sprite.NULL;
-		StatusPanel.setStatus(selectedSprite.toString(),StatusPanel.SPRITE_SELECTION);
-	}
+
 	
 	public void movePiece(Point newPos){
 		if(selectedSprite.isMoveable()){
@@ -60,7 +46,7 @@ public abstract class AbstractGameModel implements IGameModel {
 		return true;
 	}
 
-	public void pointClicked(Point p) {
+	public void tileClicked(Point p) {
 		boolean selected = false;
 		for (Sprite sprite : pieces) {
 			if(sprite.contains(p)){
@@ -71,20 +57,6 @@ public abstract class AbstractGameModel implements IGameModel {
 				}
 			}
 		}
-
-		if(!selected){
-			for (Sprite sprite : board) {
-				if(sprite.contains(p)){
-					if(sprite.isSelectable()){
-						System.out.println("selectable");
-						pieceSelected(sprite);	
-					}else{
-						movePiece(p);
-					}
-				}
-			}
-		}
-		
 	}
 
 	public void releasedPoint(Point p, boolean inside) {
