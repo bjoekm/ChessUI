@@ -16,10 +16,9 @@ import graphics.Sprite;
  */
 public interface IGameModel {
 
-	public ArrayList<Sprite> getBoard();
-	public ArrayList<Sprite> getGameObjects();
+	public ArrayList<? extends Sprite> getBoard();
+	public ArrayList<? extends Sprite> getGameObjects();
 	public void pointClicked(Point p);
-	public void pointPressed(Point p);
 	public void releasedPoint(Point p, boolean inside);
 	public void pointDragged(Point p, boolean inside);
 }

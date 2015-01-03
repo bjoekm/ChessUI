@@ -31,3 +31,6 @@ local.properties
 
 # Locally stored "Eclipse launch configurations"
 *.launch
+
+#Mac
+.DS_Store

@@ -12,12 +12,13 @@ import javax.swing.SwingConstants;
 @SuppressWarnings("serial")
 public final class StatusPanel extends JPanel {
 
-	public static int CLICKED_STATUS_IND = 0;
-	public static int DRAGGED_STATUS_IND = 1;
-	public static int PRESSED_RELEASED_STATUS_IND = 2;
-	public static int IN_OUT_STATUS_IND = 3;
-	public static int MOUSE_MOVED_STATUS_IND = 4;
-	public static int SLEEP_TIME_STATUS_IND = 5;
+	public static final int CLICKED_STATUS_IND = 0;
+	public static final int DRAGGED_STATUS_IND = 1;
+	public static final int PRESSED_RELEASED_STATUS_IND = 2;
+	public static final int IN_OUT_STATUS_IND = 3;
+	public static final int MOUSE_MOVED_STATUS_IND = 4;
+	public static final int SLEEP_TIME_STATUS_IND = 5;
+	public static final int SPRITE_SELECTION = 6;
 	
 	
 	private static StatusPanel instance = null;

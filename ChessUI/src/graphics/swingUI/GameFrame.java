@@ -9,6 +9,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 /**
@@ -51,7 +53,7 @@ public class GameFrame extends JFrame {
 		statusLabel.setBackground(Color.GREEN);
 		
 		//Setup East panel
-		JPanel east = new JPanel();
+		EventDisplayPanel east = EventDisplayPanel.getInstance();
 		east.setPreferredSize(new Dimension(250, this.getHeight()));
 		east.setBackground(Color.BLUE);
 		

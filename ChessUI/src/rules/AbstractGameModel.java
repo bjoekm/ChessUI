@@ -1,62 +1,105 @@
 package rules;
 
 import graphics.Sprite;
+import graphics.swingUI.StatusPanel;
 
 import java.awt.Point;
 import java.util.ArrayList;
 
-public class AbstractGameModel implements IGameModel {
+public abstract class AbstractGameModel implements IGameModel {
 
-	private Sprite draggedSprite = Sprite.NULL;
-	protected ArrayList<Sprite> sprites;
-	protected ArrayList<Sprite> board;
+	protected Sprite selectedSprite = Sprite.NULL;
+	protected ArrayList<Piece> pieces;
+	protected ArrayList<Board> board;
+	
 
 	public AbstractGameModel() {
 		super();
 	}
 
-	public ArrayList<Sprite> getBoard() {
+	public ArrayList<? extends Sprite> getBoard() {
 		return board;
 	}
 
-	public ArrayList<Sprite> getGameObjects() {
-		return sprites;
+	public ArrayList<? extends Sprite> getGameObjects() {
+		return pieces;
+	}
+	
+	public Sprite getSelected(){
+		return selectedSprite;
+	}
+	
+	public void pieceSelected(Sprite selected){
+		if(selected != selectedSprite){
+			pieceDeselected();
+			selected.setSnapBackPoint();
+			selectedSprite = selected;
+			System.out.println("selected");
+		}
+		StatusPanel.setStatus(selectedSprite.toString(),StatusPanel.SPRITE_SELECTION);
+	}
+	
+	public void pieceDeselected(){
+		System.out.println("desleceted");
+		selectedSprite = Sprite.NULL;
+		StatusPanel.setStatus(selectedSprite.toString(),StatusPanel.SPRITE_SELECTION);
+	}
+	
+	public void movePiece(Point newPos){
+		if(selectedSprite.isMoveable()){
+			if(moveIsAllowed(selectedSprite, newPos)){
+				selectedSprite.setMiddlePointLocation(newPos);
+				pieceDeselected();
+			}else{
+				selectedSprite.snapBack();
+			}
+		}
+	}
+	
+	public boolean moveIsAllowed(Sprite selectedSzprite2, Point newPos){
+		return true;
 	}
 
 	public void pointClicked(Point p) {
-		for (Sprite sprite : sprites) {
-			if(sprite.isSelectable()){
-				if(sprite.contains(p)){
-					
-					//Set selected
+		boolean selected = false;
+		for (Sprite sprite : pieces) {
+			if(sprite.contains(p)){
+				if(sprite.isSelectable()){
+					System.out.println("selectable");
+					pieceSelected(sprite);
+					selected = true;
 				}
 			}
 		}
-	}
 
-	public void pointPressed(Point p) {
-		for (Sprite sprite : sprites) {
-			if(sprite.isMoveable()){
+		if(!selected){
+			for (Sprite sprite : board) {
 				if(sprite.contains(p)){
-					sprite.setSnapBackPoint();
-					draggedSprite = sprite;
+					if(sprite.isSelectable()){
+						System.out.println("selectable");
+						pieceSelected(sprite);	
+					}else{
+						movePiece(p);
+					}
 				}
 			}
 		}
+		
 	}
 
 	public void releasedPoint(Point p, boolean inside) {
 		if(!inside){
-			draggedSprite.snapBack();
+			selectedSprite.snapBack();
 			return;
 		}
-		//Check if move was allowed or snapBack
-		//draggedSprite.snapBack();
-		draggedSprite = Sprite.NULL;
+		System.out.println("moved 2");
+		movePiece(p);
+		
 	}
 
 	public void pointDragged(Point p, boolean inside) {
-		draggedSprite.setMiddlePointLocation(p);
+		if(selectedSprite.isMoveable()){
+			selectedSprite.setMiddlePointLocation(p);
+		}
 	}
-
 }

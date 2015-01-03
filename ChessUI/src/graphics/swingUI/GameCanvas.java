@@ -40,17 +40,18 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 	 */
 	public static final long DEFAULT_SLEEP = 20L;
 	private int printSleepCounter = 0; //Difficult to read sleep time i status bar i printing at 50 Hz
-	private ArrayList<Sprite> sprites; //Sprites drawn second
-	private ArrayList<Sprite> board;//Sprites drawn first
+	private ArrayList<? extends Sprite> sprites; //Sprites drawn second
+	private ArrayList<? extends Sprite> board;//Sprites drawn first
 
 	private boolean inside = true; //True if mouse pointer is inside the canvas bounds
+	private boolean dragging = false;
 	private IGameModel model;
 	
 	public GameCanvas(IGameModel model){
 		this.setBackground(Color.CYAN);
 		this.model = model;
 		board = model.getBoard();
-		sprites = model.getGameObjects();
+		sprites =  model.getGameObjects();
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		this.setIgnoreRepaint(true);
@@ -63,22 +64,29 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		String str = "Clicked: ";
+		EventDisplayPanel.addEvent(str);
 		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.CLICKED_STATUS_IND);
-		model.pointClicked(e.getPoint());
+		//model.pointClicked(e.getPoint()); - pressed is always triggered. No need to act on this on to
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		String str = "Pressed ";
+		EventDisplayPanel.addEvent(str);
 		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.PRESSED_RELEASED_STATUS_IND);
-		model.pointPressed(e.getPoint());
+		model.pointClicked(e.getPoint());
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		String str = "Released";
 		StatusPanel.setStatusWithPoint(str,e.getPoint(),StatusPanel.PRESSED_RELEASED_STATUS_IND);
-		model.releasedPoint(e.getPoint(), inside);
+		if(dragging){
+			str += " dragging";
+			model.releasedPoint(e.getPoint(), inside);
+		}
+		EventDisplayPanel.addEvent(str );
+		dragging = false;
 	}
 
 	@Override
@@ -99,18 +107,19 @@ public class GameCanvas extends Canvas implements MouseListener, MouseMotionList
 	public void mouseDragged(MouseEvent e) {
 		int px = e.getX();
 		int py = e.getY();
+		dragging = true;
 		StatusPanel.setStatusWithPoint("Dragged: ", e.getPoint(),StatusPanel.DRAGGED_STATUS_IND);
 		
 		//Make sure the sent point is always inside the canvas bounds
-		if(px<DRAGGING_BORDER_SIZE){
+		if(px < DRAGGING_BORDER_SIZE){
 			px = DRAGGING_BORDER_SIZE;
-		}else if(px > getWidth() -DRAGGING_BORDER_SIZE){
-			px = getWidth()-DRAGGING_BORDER_SIZE;
+		}else if(px > getWidth() - DRAGGING_BORDER_SIZE){
+			px = getWidth() - DRAGGING_BORDER_SIZE;
 		}
 		
-		if(py<DRAGGING_BORDER_SIZE){
+		if(py < DRAGGING_BORDER_SIZE){
 			py = DRAGGING_BORDER_SIZE;
-		}else if(py > getHeight()-DRAGGING_BORDER_SIZE ){
+		}else if(py > getHeight() - DRAGGING_BORDER_SIZE ){
 			py = getHeight()-DRAGGING_BORDER_SIZE;
 		}
 		
